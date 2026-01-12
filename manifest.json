@@ -3,7 +3,7 @@
   "name": "Switchable Hotbar",
   "version": "0.0.1",
   "minAppVersion": "0.15.0",
-  "description": "Wechselbare Hotbar mit mehreren Profilen.",
+  "description": "Switch the hotbar between different profiles with custom buttons.",
   "author": "Geoguy",
   "isDesktopOnly": false
 }

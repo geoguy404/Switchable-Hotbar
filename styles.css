@@ -2,13 +2,14 @@
   position: fixed;
   bottom: 0;
   left: 0;
-  width: 100%;
-  background: var(--background-modifier-success);
-  border-top: 1px solid var(--interactive-accent);
+  width: var(--metadata-max-width);
+  background: var(--background-secondary);
+  border-top: 1px solid var(--divider-color);
   z-index: 9999;
   user-select: none;
   padding: 4px 0;
 }
+
 
 .switchable-hotbar {
   display: flex;

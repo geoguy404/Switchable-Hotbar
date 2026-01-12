@@ -1,4 +1,4 @@
-import { Plugin, MarkdownView, WorkspaceLeaf } from "obsidian";
+import { Plugin, MarkdownView, setIcon, WorkspaceLeaf } from "obsidian";
 
 interface HotbarButton {
   id: string;
@@ -19,74 +19,75 @@ const HOTBAR_PROFILES: HotbarProfile[] = [
     id: "default",
     name: "Write",
     buttons: [
-      { id: "switch", icon: "OcArrowSwitch16", command: "switchable-hotbar:switch-hotbar", tooltip: "Hotbar wechseln" },
-      { id: "internal-link", icon: "LiBrackets", command: "editor:insert-wikilink", tooltip: "Interner Link" },
-      { id: "embed", icon: "LiStickyNote", command: "editor:insert-embed", tooltip: "Embed einfügen" },
-      { id: "bold", icon: "LiBold", command: "editor:toggle-bold", tooltip: "Fett" },
-      { id: "italic", icon: "LiItalic", command: "editor:toggle-italics", tooltip: "Kursiv" },
-      { id: "heading", icon: "LiHeading", command: "editor:set-heading-1", tooltip: "Überschrift" },
-      { id: "heading2", icon: "LiHeading2", command: "editor:set-heading-2", tooltip: "Überschrift 2" },
-      { id: "comment", icon: "LiPercent", command: "editor:toggle-comments", tooltip: "Kommentar" },
-      { id: "undo", icon: "LiUndo2", command: "editor:undo", tooltip: "Rückgängig" },
-      { id: "redo", icon: "LiRedo2", command: "editor:redo", tooltip: "Wiederholen" },
+      { id: "switch", icon: "arrow-left-right", command: "switchable-hotbar:switch-hotbar", tooltip: "switch hotbar" },
+      { id: "internal-link", icon: "brackets", command: "editor:insert-wikilink", tooltip: "Internal link" },
+      { id: "embed", icon: "sticky-note", command: "editor:insert-embed", tooltip: "Embed" },
+      { id: "bold", icon: "bold", command: "editor:toggle-bold", tooltip: "Bold" },
+      { id: "italic", icon: "italic", command: "editor:toggle-italics", tooltip: "Italic" },
+      { id: "heading", icon: "heading-1", command: "editor:set-heading-1", tooltip: "Heading 1" },
+      { id: "heading2", icon: "heading-2", command: "editor:set-heading-2", tooltip: "Heading 2" },
+      { id: "comment", icon: "percent", command: "editor:toggle-comments", tooltip: "Comment" },
+      { id: "undo", icon: "undo", command: "editor:undo", tooltip: "Undo" },
+      { id: "redo", icon: "redo", command: "editor:redo", tooltip: "Redo" },
     ],
   },
   {
     id: "latex",
     name: "LaTeX",
     buttons: [
-      { id: "switch", icon: "OcArrowSwitch16", command: "switchable-hotbar:switch-hotbar", tooltip: "Hotbar wechseln" },
-      { id: "block-math", icon: "LiSigma", insertText: "$$\n\n$$", tooltip: "Block Math" },
-      { id: "align-block", icon: "LiAlignCenter", insertText: "\\begin{align}\n\n\\end{align}", tooltip: "Align Block" },
-      { id: "backslash", icon: "TiBackslash", insertText: "\\\\", tooltip: "Backslash \\" },
-      { id: "text", icon: "LiLetterText", insertText: "\\text{}", tooltip: "\\text{}" },
-      { id: "hspace", icon: "LiSpace", insertText: "\\hspace{}", tooltip: "\\hspace{}" },
-      { id: "frac", icon: "TiMathXDivideY", insertText: "\\frac{}{}", tooltip: "\\frac{}{}" },
-      { id: "leftrightarrow", icon: "LiMoveHorizontal", insertText: "\\Leftrightarrow", tooltip: "\\Leftrightarrow" },
-      { id: "undo", icon: "LiUndo2", command: "editor:undo", tooltip: "Rückgängig" },
-      { id: "redo", icon: "LiRedo2", command: "editor:redo", tooltip: "Wiederholen" },
+      { id: "switch", icon: "arrow-left-right", command: "switchable-hotbar:switch-hotbar", tooltip: "switch hotbar" },
+      { id: "block-math", icon: "sigma", insertText: "$$\n\n$$", tooltip: "Block Math" },
+      { id: "align-block", icon: "align-center", insertText: "\\begin{align}\n\n\\end{align}", tooltip: "Align Block" },
+      { id: "backslash", icon: "slash", insertText: "\\\\", tooltip: "Backslash \\" },
+      { id: "text", icon: "type", insertText: "\\text{}", tooltip: "\\text{}" },
+      { id: "hspace", icon: "space", insertText: "\\hspace{}", tooltip: "\\hspace{}" },
+      { id: "frac", icon: "divide", insertText: "\\frac{}{}", tooltip: "\\frac{}{}" },
+      { id: "leftrightarrow", icon: "arrow-left-right", insertText: "\\Leftrightarrow", tooltip: "\\Leftrightarrow" },
+      { id: "undo", icon: "undo", command: "editor:undo", tooltip: "Undo" },
+      { id: "redo", icon: "redo", command: "editor:redo", tooltip: "Redo" },
     ],
   },
   {
     id: "list",
     name: "Lists",
     buttons: [
-      { id: "switch", icon: "OcArrowSwitch16", command: "switchable-hotbar:switch-hotbar", tooltip: "Hotbar wechseln" },
-      { id: "bullet-list", icon: "LiList", command: "editor:toggle-unordered-list", tooltip: "Aufzählung" },
-      { id: "numbered-list", icon: "TiListNumbers", command: "editor:toggle-ordered-list", tooltip: "Nummerierte Liste" },
-      { id: "checkbox", icon: "LiCheckSquare", command: "editor:toggle-task", tooltip: "Checkbox" },
-      { id: "indent", icon: "LiIndentIncrease", command: "editor:indent", tooltip: "Einrücken" },
-      { id: "undent", icon: "LiIndentDecrease", command: "editor:outdent", tooltip: "Ausrücken" },
-      { id: "strikethrough", icon: "LiStrikethrough", command: "editor:toggle-strikethrough", tooltip: "Durchgestrichen" },
-      { id: "bold", icon: "LiBold", command: "editor:toggle-bold", tooltip: "Fett" },
-      { id: "undo", icon: "LiUndo2", command: "editor:undo", tooltip: "Rückgängig" },
-      { id: "redo", icon: "LiRedo2", command: "editor:redo", tooltip: "Wiederholen" },
+      { id: "switch", icon: "arrow-left-right", command: "switchable-hotbar:switch-hotbar", tooltip: "switch hotbar" },
+      { id: "bullet-list", icon: "list", command: "editor:toggle-unordered-list", tooltip: "Bullet list" },
+      { id: "numbered-list", icon: "list-ordered", command: "editor:toggle-ordered-list", tooltip: "Numbered list" },
+      { id: "checkbox", icon: "check-square", command: "editor:toggle-task", tooltip: "Checkbox" },
+      { id: "indent", icon: "indent-increase", command: "editor:indent", tooltip: "Indent" },
+      { id: "undent", icon: "indent-decrease", command: "editor:outdent", tooltip: "Outdent" },
+      { id: "strikethrough", icon: "strikethrough", command: "editor:toggle-strikethrough", tooltip: "strikethrough" },
+      { id: "bold", icon: "bold", command: "editor:toggle-bold", tooltip: "Bold" },
+      { id: "undo", icon: "undo", command: "editor:undo", tooltip: "Undo" },
+      { id: "redo", icon: "redo", command: "editor:redo", tooltip: "Redo" },
     ],
   },
   {
     id: "code",
     name: "Code",
     buttons: [
-      { id: "switch", icon: "OcArrowSwitch16", command: "switchable-hotbar:switch-hotbar", tooltip: "Hotbar wechseln" },
-      { id: "toggle-code", icon: "LiCode", command: "editor:toggle-code", tooltip: "Code inline" },
-      { id: "insert-code-block", icon: "LiCodeSquare", insertText: "```\n\n```", tooltip: "Codeblock einfügen" },
-      { id: "tab", icon: "LiArrowBigRight", insertText: "\t", tooltip: "Tab" },
-      { id: "braces", icon: "LiBraces", insertText: "{}", tooltip: "{}" },
-      { id: "equal", icon: "LiEqual", insertText: "=", tooltip: "=" },
-      { id: "semicolon", icon: "semicolon", insertText: ";", tooltip: ";" },
-      { id: "parentheses", icon: "LiParentheses", insertText: "()", tooltip: "()" },
-      { id: "undo", icon: "LiUndo2", command: "editor:undo", tooltip: "Rückgängig" },
-      { id: "redo", icon: "LiRedo2", command: "editor:redo", tooltip: "Wiederholen" },
+      { id: "switch", icon: "arrow-left-right", command: "switchable-hotbar:switch-hotbar", tooltip: "switch hotbar" },
+      { id: "toggle-code", icon: "code", command: "editor:toggle-code", tooltip: "Code inline" },
+      { id: "insert-code-block", icon: "square-code", insertText: "```\n\n```", tooltip: "insert code block" },
+      { id: "tab", icon: "arrow-right", insertText: "\t", tooltip: "Tab" },
+      { id: "braces", icon: "braces", insertText: "{}", tooltip: "{}" },
+      { id: "equal", icon: "equal", insertText: "=", tooltip: "=" },
+      { id: "semicolon", icon: "dot", insertText: ";", tooltip: ";" },
+      { id: "parentheses", icon: "parentheses", insertText: "()", tooltip: "()" },
+      { id: "undo", icon: "undo", command: "editor:undo", tooltip: "Undo" },
+      { id: "redo", icon: "redo", command: "editor:redo", tooltip: "Redo" },
     ],
   },
 ];
+
 
 export default class SwitchableHotbarPlugin extends Plugin {
   currentProfileIndex: number = 0;
   containerEl: HTMLElement | null = null;
 
   async onload() {
-    console.log("SwitchableHotbar Plugin loaded succesfully");
+    console.log("Switchable Hotbar Plugin loaded succesfully");
 
     // Command registrieren, der über Button aufgerufen wird zum Hotbar wechseln
     this.addCommand({
@@ -137,19 +138,13 @@ export default class SwitchableHotbarPlugin extends Plugin {
       buttonEl.setAttr("aria-label", btn.tooltip || btn.id);
       buttonEl.title = btn.tooltip || btn.id;
 
-      // Icon setzen
-      const iconEl = document.createElement("i");
-      iconEl.addClass("switchable-hotbar-icon");
-      // Icon mit Obsidian-Iconfont, hier als data-icon-Name
-      iconEl.setAttr("data-icon", btn.icon);
-      buttonEl.appendChild(iconEl);
-
       buttonEl.onclick = (e) => {
         e.preventDefault();
         this.onClickButton(btn);
       };
 
-      hotbarEl.appendChild(buttonEl);
+    setIcon(buttonEl, btn.icon);
+    hotbarEl.appendChild(buttonEl);
     }
 
     this.containerEl.appendChild(hotbarEl);
@@ -167,7 +162,7 @@ export default class SwitchableHotbarPlugin extends Plugin {
     const editor = view.editor;
 
     if (button.command) {
-      this.app.commands.executeCommandById(button.command);
+    (this.app as any).commands.executeCommandById(button.command);
     } else if (button.insertText) {
       editor.replaceSelection(button.insertText);
 
