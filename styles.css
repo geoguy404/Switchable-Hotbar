@@ -1,0 +1,54 @@
+.switchable-hotbar-container {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: var(--background-modifier-success);
+  border-top: 1px solid var(--interactive-accent);
+  z-index: 9999;
+  user-select: none;
+  padding: 4px 0;
+}
+
+.switchable-hotbar {
+  display: flex;
+  gap: 8px;
+  padding: 0 8px;
+  overflow-x: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--interactive-accent) transparent;
+}
+
+.switchable-hotbar::-webkit-scrollbar {
+  height: 6px;
+}
+
+.switchable-hotbar::-webkit-scrollbar-thumb {
+  background-color: var(--interactive-accent);
+  border-radius: 3px;
+}
+
+.switchable-hotbar-button {
+  background: var(--background-primary);
+  border: none;
+  border-radius: 6px;
+  padding: 6px 10px;
+  cursor: pointer;
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
+  min-height: 36px;
+  transition: background-color 0.2s ease;
+}
+
+.switchable-hotbar-button:hover {
+  background: var(--interactive-accent);
+  color: var(--text-on-accent);
+}
+
+.switchable-hotbar-icon {
+  font-size: 20px;
+  pointer-events: none;
+}
